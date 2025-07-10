@@ -1,29 +1,3 @@
-// const express = require('express');
-// const db = require('./db');
-
-// const app = express();
-// const PORT = 3000;
-
-// app.get('/users', async (req, res) => {
-//   try {
-//     const result = await db.query('SELECT * FROM users');
-//     res.json(result.rows);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).send('Server error');
-//   }
-// });
-
-// app.listen(PORT, () => {
-//   console.log(`Server running on http://localhost:${PORT}`);
-// });
-
-
-
-
-// server.js
-// Main entry point for the backend application
-
 const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
@@ -34,7 +8,12 @@ const port = process.env.PORT || 3001;
 
 // --- Database Configuration ---
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  // connectionString: "postgresql://postgres:admin@localhost:5432/online_exam",
+  user: 'postgres',
+  host: 'localhost',
+  database: 'online_exam',
+  password: 'admin',
+  port: 5432,
   // If you're running locally without SSL, you might need this:
   // ssl: {
   //   rejectUnauthorized: false
@@ -42,7 +21,14 @@ const pool = new Pool({
 });
 
 // --- Middleware ---
-app.use(cors()); // Enable Cross-Origin Resource Sharing
+// app.use(cors()); // Enable Cross-Origin Resource Sharing
+app.use(cors({
+  origin: 'http://localhost:5173', // or whatever port your React app runs on
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type'],
+}));
+
+
 app.use(express.json()); // Parse JSON request bodies
 
 // --- API Routes ---
@@ -53,10 +39,14 @@ app.get('/api/courses', async (req, res) => {
     const { rows } = await pool.query('SELECT * FROM courses ORDER BY name');
     res.json(rows);
   } catch (err) {
-    console.error('Error fetching courses:', err);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Detailed error:', err);
+    res.status(500).json({ 
+      error: 'Internal server error',
+      details: err.message  // Send error details to frontend
+    });
   }
 });
+
 
 // 2. Get questions for a specific course with pagination
 app.get('/api/questions/:courseId', async (req, res) => {
