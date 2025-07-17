@@ -266,7 +266,7 @@ INSERT INTO questions (course_id, question_text, options, correct_option) VALUES
 
 -- Insert sample questions for React Basics (Course ID 2)
 INSERT INTO questions (course_id, question_text, options, correct_option) VALUES
-(2, 'What is not React?', '["A JavaScript library for building user interfaces", "A server-side framework", "A database", "A programming language"]', 0),
+(2, 'What is React?', '["A JavaScript library for building user interfaces", "A server-side framework", "A database", "A programming language"]', 0),
 (2, 'What is JSX?', '["A syntax extension for JavaScript", "A templating engine", "A CSS preprocessor", "A database query language"]', 0),
 (2, 'How do you create a React component?', '["Using a function or a class", "Only using classes", "Only using functions", "Using a constructor"]', 0),
 (2, 'What is the virtual DOM?', '["A direct representation of the DOM", "A copy of the DOM kept in memory", "A tool for debugging", "A browser feature"]', 1),
